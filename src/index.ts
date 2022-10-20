@@ -126,3 +126,72 @@ let listadoTareasNuevas: Tarea[] = [
 
 listadoTareasNuevas.forEach((e: Tarea, index: number) => console.log(`${index} - ${e.nombre}`))
 
+// Funciones
+
+/**
+ * Funcion que muestra por consola un nombre @param nombre
+ * y su edad @param edad
+ */
+
+function name(nombre: string, edad: number) {
+  console.log(`${nombre} - ${edad}`)
+};
+
+name('Federico', 22);
+
+function despedir(nombre?:string){
+  if(nombre){
+    console.log(`Adios ${nombre}!`);
+  }else{
+    console.log('Adios!');
+  }
+};
+
+despedir('Jose');
+despedir();
+
+// arrow function.
+
+type Empleado = {
+  nombre:string;
+  apellido:string;
+  edad:number
+}
+
+let empleadoMartin: Empleado = {
+  nombre:'martin',
+  apellido: 'Maritez',
+  edad: 10
+}
+
+const mostrarEmpleado = (empleado: Empleado):string => `${empleado.nombre} tiene ${empleado.edad}`
+
+mostrarEmpleado(empleadoMartin)
+
+const datosEmpleado = (empleado: Empleado):string => {
+  if(empleado.edad > 5){
+    return `Empleado ${empleado.nombre} Esta en edad de jubilacion`;
+  }else{
+    return `el empleado ${empleado.nombre} esta en edad laboral`;
+  };
+};
+
+datosEmpleado(empleadoMartin);
+
+const obtenerSalario = (empleado: Empleado, cobrar: Function) => {
+  if(empleado.edad > 70){
+    return
+  }else{
+    cobrar()
+  }
+}
+
+const cobrarSalario = () => {
+  console.log('Cobrar nomina de empleado')
+}
+
+obtenerSalario(empleadoMartin, cobrarSalario)
+
+
+
+

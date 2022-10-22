@@ -1,5 +1,9 @@
-console.log("Hola nashi")
-console.log('asdddd')
+import { deleteAllCookies, deleteCookie, getCookieValue, setCookie } from 'cookies-utils'
+import { LISTA_CURSOS } from './mock/Cursos.mock';
+import { Curso } from './models/curso';
+import { Estudiante } from './models/Estudiante';
+
+console.log("Hola")
 
 const PI: number = 3.1416;
 let apellido: string = "san jose";
@@ -191,6 +195,203 @@ const cobrarSalario = () => {
 }
 
 obtenerSalario(empleadoMartin, cobrarSalario)
+
+// async function
+
+async function ejemploAsync (): Promise<string> {
+  await console.log('Tarea a completar antes de seguir con la secuencia de instruccioens')
+  console.log('Tarea completada')
+  return "completado"
+}
+
+ejemploAsync()
+  .then((response) => console.log(response))
+  .catch((error) => console.log(error))
+  .finally(() => "Todo ha terminado.")
+
+// Funcion generadora
+
+function* ejemploGenerator () {
+  
+  //yield --> Para emitir valores.
+
+  let index : number = 0;
+
+  while (index < 5){
+    //Emitimos un valor incrementado.
+
+    yield index++
+  }
+
+}
+
+// Guardar la funcion generadora en una variable.
+
+let generadora = ejemploGenerator();
+
+// Accedemos a los valores emitidos.
+
+console.log(generadora.next()) // 0
+console.log(generadora.next()) //1
+console.log(generadora.next()) //2
+console.log(generadora.next()) //3
+
+//worker
+
+function* watcher(valor: number) {
+  yield valor; //Emitimos el valor inicial
+  yield worker(valor); // LLamamos a la emicion del worker para que emita otros valores
+  yield valor + 10; //Emitimos el valor final.
+}
+
+
+function* worker(valor: number) {
+  yield valor + 1;
+  yield valor + 2;
+  yield valor + 3;
+}
+
+let generatorSaga = watcher(0);
+
+console.log(generatorSaga.next().value) // 0 lo ha hecho el watcher
+console.log(generatorSaga.next().value) // 1 Lo ha hecho el worker
+console.log(generatorSaga.next().value) // 2 Lo ha hecho el worker
+console.log(generatorSaga.next().value) // 3 Lo ha hecho el worker
+console.log(generatorSaga.next().value) // 4 lo ha hecho el watcher
+
+// sobrecarga de funciones 
+
+function mostrarError(error: (string | number)){
+  console.log(`ha habido un error: ${error}`);
+};
+
+// PPersistencia de datos.
+// 1. LocalStorage.  --> Almacena los datos en el navegador de forma pesistida
+// 2. sessionStorage. --> los datos persisten en la sesion del navegador
+// 3. Cookies. --> Tienen fecha de caducidad y tambien tienen un ambito de URL.
+
+
+// localStorage
+
+//function guardarLocalStorage(): void{
+ // localStorage.setItem('nombre', 'Martin');
+//}
+
+//function leerLocalStorage(): void{
+//  let session = localStorage.getItem('nombre')
+//}
+
+
+// COOKIES.
+
+const cookeisOptions = {
+  name: "usuario",
+  value: "Martin",
+  maxAge: 10 * 60,
+  expires: new Date(2099, 10, 1),
+  path: "/"
+};
+
+// set cookie
+setCookie(cookeisOptions)
+
+// Leer una cookie
+let cookieLeida = getCookieValue("usuario")
+console.log(cookieLeida)
+
+// Eliminar
+deleteCookie("usuario");
+
+// Elimiar todas las cookies .
+deleteAllCookies()
+
+
+// Class Temporizador
+
+class Temporizador {
+
+  public terminar?: (tiempo: number) => void;
+
+  public empezar(): void {
+
+    setTimeout(() => {
+      //Verificar si existe la funcion terminar como callBack
+      if(!this.terminar) return;
+
+      //Cuando haya pasado el tiempo se ejecutara la funcion terminar
+      this.terminar(Date.now())
+
+    }, 3000);
+  };
+};
+
+const miTemporizador = new Temporizador();
+
+// Definimos la funcion del callback a ejecutar cuando termine el tiempo.
+
+miTemporizador.terminar = (tiempo: number) => console.log("terminamos la tarea,", tiempo);
+
+//Lanzamos el temporizador
+
+miTemporizador.empezar(); // Iniciara el timeOut
+
+setInterval(() => console.log("Tic"), 1000); // Imprimir tic cada segundo por consola.
+
+delete miTemporizador.terminar;
+
+ // Creamos un curso
+
+const cursoTs: Curso = new Curso("TypeScript", 15);
+const cursoJs: Curso = new Curso("JavaScript", 20);
+
+// const listaCursos: Curso[] = [];
+
+// Usamos el mock
+
+const listaCursos: Curso[] = LISTA_CURSOS;
+
+
+listaCursos.push(cursoTs, cursoJs);
+
+const martin: Estudiante = new Estudiante("Martin", listaCursos, "Fernandez");
+
+console.log(`${martin.nombre} Estudia:`)
+martin.cursos.forEach( curso => console.log(`- ${curso.nombre} (${curso.horas})`))
+
+const cursoReact: Curso = new Curso("React", 55);
+martin.cursos.push(cursoReact);
+
+// Saber la diferencia de un objeto/variable
+// - typeof
+// - instanceof
+
+
+// Conocer las horas estudiadas de martin
+
+martin.horasEstudidas;
+martin.ID_Estudiante;
+martin.ID_Estudiante = 'Nueva ID';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
